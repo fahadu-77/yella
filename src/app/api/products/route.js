@@ -9,7 +9,8 @@ export async function GET() {
         });
         return NextResponse.json(products);
     } catch (err) {
-        return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+        console.error('Fetch products error:', err);
+        return NextResponse.json({ error: 'Failed to fetch products', details: err.message }, { status: 500 });
     }
 }
 
