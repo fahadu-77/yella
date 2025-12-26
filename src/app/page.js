@@ -1,4 +1,5 @@
 import { ShoppingBag } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -7,7 +8,7 @@ export default function Home() {
         <div className="w-24 h-24 bg-[var(--primary)] rounded-3xl flex items-center justify-center rotate-12 hover:rotate-0 transition-transform duration-500 shadow-[0_0_50px_var(--primary-glow)]">
           <ShoppingBag size={48} color="#000" strokeWidth={2.5} />
         </div>
-        
+
         <div className="text-center">
           <h1 className="text-8xl md:text-9xl font-black mb-2 tracking-tighter">
             YELLA<span className="neon-text">.</span>
@@ -18,9 +19,9 @@ export default function Home() {
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-4">
-          <button className="btn-primary">
+          <Link href="/shop" className="btn-primary">
             Start Shopping
-          </button>
+          </Link>
           <div className="text-[var(--foreground-muted)] text-sm font-medium">
             Karnataka's Premium Everything App
           </div>

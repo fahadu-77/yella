@@ -1,13 +1,15 @@
 :root {
   /* Yella Premium Color Palette */
-  --primary: #faff00; /* Neon Yellow-Green (Punchy) */
+  --primary: #faff00;
+  /* Neon Yellow-Green (Punchy) */
   --primary-glow: rgba(250, 255, 0, 0.4);
-  --background: #000000; /* Deep Obsidian */
+  --background: #000000;
+  /* Deep Obsidian */
   --surface: #0a0a0a;
   --surface-accent: #111111;
   --foreground: #ffffff;
   --foreground-muted: #888888;
-  
+
   /* Glassmorphism */
   --glass: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.1);
@@ -33,7 +35,10 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-heading);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -78,4 +83,51 @@ h1, h2, h3, h4 {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px -5px var(--primary-glow);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.875rem;
+  color: var(--foreground-muted);
+  font-weight: 500;
+}
+
+.input-field {
+  background: var(--surface-accent);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: var(--foreground);
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.auth-link {
+  color: var(--foreground-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.auth-link a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
 }
