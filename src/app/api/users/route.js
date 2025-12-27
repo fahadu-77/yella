@@ -15,6 +15,8 @@ export async function GET() {
                 email: true,
                 name: true,
                 role: true,
+                isStaffRequested: true,
+                staffRequestDate: true,
                 createdAt: true
             },
             orderBy: { createdAt: 'desc' }
@@ -27,16 +29,42 @@ export async function GET() {
 }
 
 export async function PATCH(request) {
+    const user = await getAuthUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
     try {
-        const { userId, role } = await request.json();
+        const { userId, role, isStaffRequested } = await request.json();
+
+        // If a user is requesting staff access for themselves
+        if (isStaffRequested !== undefined && !role) {
+            const updated = await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    isStaffRequested: true,
+                    staffRequestDate: new Date()
+                }
+            });
+            return NextResponse.json({ success: true, user: updated });
+        }
+
+        // Only ADMIN/STAFF can change roles (Admin only for full control)
+        if (role && user.role !== 'ADMIN') {
+            return NextResponse.json({ error: 'Only admins can change roles' }, { status: 403 });
+        }
+
+        const data = {};
+        if (role) {
+            data.role = role;
+            data.isStaffRequested = false; // Reset request on role change
+        }
 
         const updatedUser = await prisma.user.update({
             where: { id: userId },
-            data: { role }
+            data
         });
 
         return NextResponse.json(updatedUser);
     } catch (err) {
-        return NextResponse.json({ error: 'Failed to update user role' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
     }
 }

@@ -1,23 +1,91 @@
 :root {
-  /* Yella Premium Color Palette */
+  /* Premium Obsidian Palette */
   --primary: #faff00;
-  /* Neon Yellow-Green (Punchy) */
-  --primary-glow: rgba(250, 255, 0, 0.4);
-  --background: #000000;
-  /* Deep Obsidian */
-  --surface: #0a0a0a;
-  --surface-accent: #111111;
-  --foreground: #ffffff;
-  --foreground-muted: #888888;
+  /* Toxic Yellow */
+  --primary-glow: rgba(250, 255, 0, 0.45);
+  --primary-deep: #ccff00;
 
-  /* Glassmorphism */
+  --background: #000000;
+  --surface-0: #050505;
+  --surface-1: #0a0a0a;
+  --surface-2: #121212;
+  --surface-3: #1a1a1a;
+
+  --zinc-50: #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-600: #52525b;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+  --zinc-950: #09090b;
+
+  --foreground: #ffffff;
+  --foreground-muted: #a1a1aa;
+
+  /* Glassmorphism 2.0 */
   --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: 15px;
+  --glass-strong: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-bright: rgba(255, 255, 255, 0.15);
+  --glass-blur: 24px;
 
   /* Typography */
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 20px rgba(250, 255, 0, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(250, 255, 0, 0.3);
+  }
+
+  100% {
+    box-shadow: 0 0 20px rgba(250, 255, 0, 0.1);
+  }
 }
 
 * {
@@ -33,101 +101,167 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 50% -20%, rgba(250, 255, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(250, 255, 0, 0.02) 0%, transparent 40%);
+  background-attachment: fixed;
 }
 
+/* Base Headings */
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
-/* Base Layout Helpers */
+/* Essential Layouts */
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-.glass-card {
+/* Glassmorphism System */
+.glass-surface {
   background: var(--glass);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
+  border-radius: 2rem;
 }
 
+.glass-card {
+  background: var(--glass-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 2rem;
+  padding: 2rem;
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: var(--glass-border-bright);
+  transform: translateY(-4px);
+}
+
+/* Typography Extensions */
 .neon-text {
   color: var(--primary);
-  text-shadow: 0 0 10px var(--primary-glow);
+  text-shadow: 0 0 30px var(--primary-glow);
 }
 
+.text-gradient {
+  background: linear-gradient(to bottom right, #fff, #888);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Premium Buttons */
 .btn-primary {
   background: var(--primary);
   color: #000;
-  padding: 0.8rem 2rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 1.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
   cursor: pointer;
   border: none;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px var(--primary-glow);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 20px 40px -10px var(--primary-glow);
+  background: #fff;
 }
 
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Form Systems */
 .auth-form {
   width: 100%;
-  max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .input-group label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--foreground-muted);
-  font-weight: 500;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-left: 0.5rem;
 }
 
 .input-field {
-  background: var(--surface-accent);
+  background: var(--surface-2);
   border: 1px solid var(--glass-border);
-  border-radius: 0.75rem;
-  padding: 0.8rem 1rem;
+  border-radius: 1.25rem;
+  padding: 1rem 1.25rem;
   color: var(--foreground);
   font-family: var(--font-body);
-  transition: border-color 0.2s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .input-field:focus {
   outline: none;
   border-color: var(--primary);
+  background: var(--surface-3);
+  box-shadow: 0 0 20px rgba(250, 255, 0, 0.05);
 }
 
-.auth-link {
-  color: var(--foreground-muted);
-  font-size: 0.875rem;
-  text-align: center;
+/* Utility Animations */
+.animate-reveal {
+  animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.auth-link a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Scrollbar Refinement */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--zinc-800);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--zinc-700);
 }

@@ -33,7 +33,7 @@ export async function PATCH(request, { params }) {
 
 export async function DELETE(request, { params }) {
     const user = await getAuthUser();
-    if (!user || user.role !== 'ADMIN') { // Only ADMIN can delete
+    if (!user || (user.role !== 'STAFF' && user.role !== 'ADMIN')) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

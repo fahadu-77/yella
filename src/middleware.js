@@ -10,7 +10,7 @@ export async function middleware(request) {
     // Protect Admin Routes
     if (pathname.startsWith('/admin')) {
         if (!token) {
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+            return NextResponse.redirect(new URL('/login', request.url));
         }
 
         try {
@@ -21,18 +21,19 @@ export async function middleware(request) {
                 return NextResponse.redirect(new URL('/', request.url));
             }
         } catch (err) {
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+            return NextResponse.redirect(new URL('/login', request.url));
         }
     }
 
-    // Prevent logged-in users from seeing auth pages
-    if (pathname.startsWith('/auth') && token) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
+    // Let users go to login/register even if they have a token
+    // This allows them to re-authenticate if their session is "bad"
+    // if ((pathname === '/login' || pathname === '/register') && token) {
+    //     return NextResponse.redirect(new URL('/', request.url));
+    // }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/auth/:path*'],
+    matcher: ['/admin/:path*', '/login', '/register'],
 };

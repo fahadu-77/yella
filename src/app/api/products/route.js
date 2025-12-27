@@ -9,8 +9,7 @@ export async function GET() {
         });
         return NextResponse.json(products);
     } catch (err) {
-        console.error('Fetch products error:', err);
-        return NextResponse.json({ error: 'Failed to fetch products', details: err.message }, { status: 500 });
+        return NextResponse.json({ error: 'Failed' }, { status: 500 });
     }
 }
 
@@ -21,26 +20,21 @@ export async function POST(request) {
     }
 
     try {
-        const { name, description, price, stock, category, image } = await request.json();
-
-        if (!name || price === undefined) {
-            return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
+        const data = await request.json();
+        if (!data.name || data.price === undefined) {
+            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
         const product = await prisma.product.create({
             data: {
-                name,
-                description,
-                price: parseFloat(price),
-                stock: parseInt(stock) || 0,
-                category,
-                image,
+                ...data,
+                price: parseFloat(data.price),
+                stock: parseInt(data.stock) || 0,
             },
         });
 
         return NextResponse.json(product);
     } catch (err) {
-        console.error('Create product error:', err);
-        return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed' }, { status: 500 });
     }
 }
