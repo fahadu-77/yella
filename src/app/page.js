@@ -1,48 +1,57 @@
 import Link from 'next/link';
-import { ArrowRight, Zap, Shield, Truck } from 'lucide-react';
+import { ArrowRight, Zap, Shield, Truck, Clock, Star, Package } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import CategoryCard from '@/components/CategoryCard';
+import Footer from '@/components/Footer';
 
 export default function Home() {
+  const categories = [
+    { name: 'Fruits & Vegetables', icon: '🥬', href: '/shop?category=Fruits' },
+    { name: 'Dairy & Eggs', icon: '🥛', href: '/shop?category=Dairy' },
+    { name: 'Snacks', icon: '🍿', href: '/shop?category=Snacks' },
+    { name: 'Beverages', icon: '🥤', href: '/shop?category=Beverages' },
+    { name: 'Bakery', icon: '🍞', href: '/shop?category=Bakery' },
+    { name: 'Personal Care', icon: '🧴', href: '/shop?category=Personal Care' },
+  ];
+
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
-        {/* Background Decoration */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+      {/* Hero Banner */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-600 to-emerald-700">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
         </div>
 
-        <div className="container-custom relative">
-          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center py-20">
+        <div className="container-custom relative py-16 md:py-24">
+          <div className="max-w-3xl">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-sm font-medium mb-8 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6">
               <Zap size={16} />
-              <span>Fast Delivery Across Karnataka</span>
+              <span>Free delivery on orders above ₹500</span>
             </div>
 
             {/* Heading */}
-            <h1 className="text-5xl md:text-7xl font-bold text-slate-50 mb-6 animate-slide-up max-w-4xl">
-              Everything You Need,
-              <span className="text-emerald-400"> Delivered Fresh</span>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Fresh Groceries
+              <br />
+              <span className="text-emerald-100">Delivered to Your Door</span>
             </h1>
 
             {/* Description */}
-            <p className="text-xl text-slate-400 mb-12 max-w-2xl animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              From groceries to essentials, get premium quality products delivered to your doorstep in Karnataka.
+            <p className="text-xl text-emerald-50 mb-8 max-w-2xl">
+              Shop from a wide range of fresh produce, dairy, snacks, and daily essentials. Fast delivery across Karnataka.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/shop">
-                <Button variant="primary" size="lg" className="gap-2">
+                <Button variant="primary" size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50 gap-2">
                   Start Shopping
                   <ArrowRight size={20} />
-                </Button>
-              </Link>
-              <Link href="/account">
-                <Button variant="secondary" size="lg">
-                  My Account
                 </Button>
               </Link>
             </div>
@@ -50,40 +59,105 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-slate-800/50">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="card card-hover text-center">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Truck className="text-emerald-400" size={24} />
+      {/* Trust Indicators */}
+      <section className="bg-slate-800/30 border-y border-slate-700">
+        <div className="container-custom py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Truck className="text-emerald-400" size={20} />
               </div>
-              <h3 className="text-xl font-bold text-slate-50 mb-2">Fast Delivery</h3>
+              <div>
+                <p className="text-sm font-semibold text-slate-50">Free Delivery</p>
+                <p className="text-xs text-slate-400">On orders above ₹500</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Clock className="text-emerald-400" size={20} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-50">Fast Delivery</p>
+                <p className="text-xs text-slate-400">Within 2 hours</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="text-emerald-400" size={20} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-50">Quality Assured</p>
+                <p className="text-xs text-slate-400">100% fresh products</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Star className="text-emerald-400" size={20} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-50">Best Prices</p>
+                <p className="text-xs text-slate-400">Guaranteed lowest</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16 bg-slate-900">
+        <div className="container-custom">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-slate-50 mb-2">Shop by Category</h2>
+            <p className="text-slate-400">Browse our wide range of products</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((category) => (
+              <CategoryCard key={category.name} {...category} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-16 bg-slate-800/50">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-50 mb-2">Why Choose Yella?</h2>
+            <p className="text-slate-400">Your trusted grocery partner</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="card text-center">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Package className="text-emerald-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-50 mb-2">Wide Selection</h3>
               <p className="text-slate-400">
-                Get your orders delivered quickly across Karnataka with our reliable delivery network.
+                Over 5,000+ products across all categories to choose from.
               </p>
             </div>
 
-            {/* Feature 2 */}
-            <div className="card card-hover text-center">
+            <div className="card text-center">
               <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Shield className="text-emerald-400" size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-50 mb-2">Quality Assured</h3>
+              <h3 className="text-xl font-bold text-slate-50 mb-2">Quality Guaranteed</h3>
               <p className="text-slate-400">
                 Every product is carefully selected and quality-checked before delivery.
               </p>
             </div>
 
-            {/* Feature 3 */}
-            <div className="card card-hover text-center">
+            <div className="card text-center">
               <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Zap className="text-emerald-400" size={24} />
+                <Truck className="text-emerald-400" size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-50 mb-2">Easy Ordering</h3>
+              <h3 className="text-xl font-bold text-slate-50 mb-2">Fast Delivery</h3>
               <p className="text-slate-400">
-                Simple, intuitive interface makes shopping a breeze. Order in just a few clicks.
+                Get your orders delivered quickly across Karnataka with our reliable network.
               </p>
             </div>
           </div>
@@ -91,7 +165,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-slate-800/50 to-slate-900">
+      <section className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
         <div className="container-custom text-center">
           <h2 className="text-4xl font-bold text-slate-50 mb-4">
             Ready to get started?
@@ -107,6 +181,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 }
