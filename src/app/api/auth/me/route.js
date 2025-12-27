@@ -3,10 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-    const authUser = await getAuthUser();
-    if (!authUser) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-
     try {
+        const authUser = await getAuthUser();
+        if (!authUser) {
+            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+        }
+
         const user = await prisma.user.findUnique({
             where: { id: authUser.id },
             select: {
@@ -19,8 +21,17 @@ export async function GET() {
                 createdAt: true
             }
         });
+
+        if (!user) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
         return NextResponse.json(user);
     } catch (err) {
-        return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
+        console.error('Error in /api/auth/me:', err);
+        return NextResponse.json({
+            error: 'Failed to fetch profile',
+            details: err.message
+        }, { status: 500 });
     }
 }
