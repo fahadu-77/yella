@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShoppingBag, Loader2, ArrowRight, User, Lock, Mail, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { UserPlus, Loader2 } from 'lucide-react';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -22,124 +24,110 @@ export default function RegisterPage() {
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password })
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                router.push('/');
+                router.push('/login');
             } else {
                 setError(data.error || 'Registration failed');
             }
         } catch (err) {
-            setError('An unexpected error occurred');
+            setError('Something went wrong. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <main className="min-h-screen bg-black text-white relative flex items-center justify-center p-4">
-            {/* Background Accents */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[var(--primary-glow)] blur-[150px] opacity-[0.05] animate-float" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[var(--primary-glow)] blur-[150px] opacity-[0.03] animate-float" style={{ animationDelay: '-3s' }} />
+        <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+            {/* Background Decoration */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
             </div>
 
-            <div className="relative z-10 w-full max-w-md space-y-12 animate-reveal">
-                <div className="text-center space-y-6">
-                    <Link href="/" className="inline-flex items-center gap-3 text-zinc-600 hover:text-white transition-all text-[10px] font-black uppercase tracking-[0.4em] mb-4">
-                        <ArrowLeft size={14} /> Back to Entry
-                    </Link>
-                    <div className="flex justify-center">
-                        <div className="w-20 h-20 bg-[var(--primary)] rounded-3xl flex items-center justify-center rotate-12 shadow-[0_0_40px_var(--primary-glow)]">
-                            <ShoppingBag size={40} color="#000" strokeWidth={2.5} />
-                        </div>
+            <div className="relative w-full max-w-md">
+                {/* Logo */}
+                <Link href="/" className="flex items-center justify-center gap-2 mb-8">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
+                        <span className="text-slate-900 font-bold text-xl">Y</span>
                     </div>
-                    <div className="space-y-2">
-                        <h1 className="text-5xl font-black uppercase italic tracking-tighter m-0">
-                            New <span className="neon-text">Profile</span>
-                        </h1>
-                        <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.4em]">Register Identity Protocol</p>
+                    <span className="text-2xl font-bold text-slate-50">Yella</span>
+                </Link>
+
+                {/* Register Card */}
+                <div className="card">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-slate-50 mb-2">Create account</h1>
+                        <p className="text-slate-400">Sign up to start shopping with Yella</p>
                     </div>
-                </div>
 
-                <div className="glass-card p-10 border-white/5 relative overflow-hidden group">
-                    <div className="absolute bottom-0 right-0 w-1 h-full bg-gradient-to-t from-transparent via-[var(--primary)] to-transparent opacity-20" />
-
-                    <form onSubmit={handleSubmit} className="auth-form">
-                        <div className="input-group">
-                            <label className="flex items-center gap-2">
-                                <User size={12} className="text-[var(--primary)]" />
-                                Full Name / Alias
-                            </label>
-                            <input
-                                type="text"
-                                required
-                                className="input-field"
-                                placeholder="Identification Name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
+                    {error && (
+                        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                            <p className="text-sm text-red-400">{error}</p>
                         </div>
+                    )}
 
-                        <div className="input-group">
-                            <label className="flex items-center gap-2">
-                                <Mail size={12} className="text-[var(--primary)]" />
-                                Contact / Email
-                            </label>
-                            <input
-                                type="email"
-                                required
-                                className="input-field"
-                                placeholder="name@domain.sh"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <Input
+                            label="Full Name"
+                            type="text"
+                            placeholder="John Doe"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
 
-                        <div className="input-group">
-                            <label className="flex items-center gap-2">
-                                <Lock size={12} className="text-[var(--primary)]" />
-                                Security / Password
-                            </label>
-                            <input
-                                type="password"
-                                required
-                                className="input-field"
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                        <Input
+                            label="Email"
+                            type="email"
+                            placeholder="you@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                        {error && (
-                            <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-widest p-4 rounded-xl animate-in fade-in slide-in-from-top-1">
-                                [ Registry Failure ]: {error}
-                            </div>
-                        )}
+                        <Input
+                            label="Password"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
-                        <button
+                        <Button
                             type="submit"
+                            variant="primary"
+                            className="w-full mt-6"
                             disabled={loading}
-                            className="btn-primary w-full h-16 group"
                         >
                             {loading ? (
-                                <Loader2 className="animate-spin" size={20} />
+                                <>
+                                    <Loader2 className="animate-spin" size={18} />
+                                    Creating account...
+                                </>
                             ) : (
                                 <>
-                                    Establish Identity
-                                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                    <UserPlus size={18} />
+                                    Create account
                                 </>
                             )}
-                        </button>
+                        </Button>
                     </form>
-                </div>
 
-                <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">
-                    Existing Identity? <Link href="/login" className="text-[var(--primary)] hover:text-white transition-colors">Authorize Session</Link>
-                </p>
+                    <div className="mt-6 pt-6 border-t border-slate-700 text-center">
+                        <p className="text-sm text-slate-400">
+                            Already have an account?{' '}
+                            <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-medium">
+                                Sign in
+                            </Link>
+                        </p>
+                    </div>
+                </div>
             </div>
         </main>
     );
