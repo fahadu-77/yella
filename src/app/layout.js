@@ -16,7 +16,9 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <CartProvider>
-          {children}
+          <div className="max-w-[1920px] mx-auto min-h-screen relative shadow-2xl bg-black">
+            {children}
+          </div>
         </CartProvider>
       </body>
     </html>
