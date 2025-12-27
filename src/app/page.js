@@ -11,7 +11,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-12 max-w-4xl mx-auto text-center animate-reveal">
+      <div className="relative z-10 flex flex-col items-center gap-16 max-w-5xl mx-auto text-center animate-reveal">
         {/* Brand Icon */}
         <div className="group relative">
           <div className="absolute inset-0 bg-[var(--primary)] blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
@@ -21,8 +21,8 @@ export default function Home() {
         </div>
 
         {/* Hero Text */}
-        <div className="space-y-4">
-          <h1 className="text-8xl md:text-[12rem] font-black tracking-tighter leading-none m-0">
+        <div className="space-y-6">
+          <h1 className="text-8xl md:text-[13rem] font-black tracking-tighter leading-none m-0">
             YELLA<span className="neon-text">.</span>
           </h1>
           <div className="flex flex-col items-center gap-1">

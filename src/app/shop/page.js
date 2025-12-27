@@ -45,9 +45,9 @@ export default function ShopPage() {
                 <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] bg-zinc-900 blur-[120px] opacity-20" />
             </div>
 
-            <div className="relative z-10 max-w-[1600px] mx-auto p-4 md:p-8 space-y-8 md:space-y-12">
+            <div className="relative z-10 max-w-[1600px] mx-auto p-6 md:p-12 space-y-12 md:space-y-16">
                 {/* Header */}
-                <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 animate-reveal">
+                <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 animate-reveal">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="group flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all">
                             <ArrowLeft size={20} className="text-zinc-400 group-hover:text-white transition-colors" />
@@ -109,8 +109,8 @@ export default function ShopPage() {
                                     key={cat}
                                     onClick={() => setActiveCategory(cat)}
                                     className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wide transition-all whitespace-nowrap ${activeCategory === cat
-                                            ? 'bg-white text-black'
-                                            : 'bg-zinc-900 text-zinc-500 hover:text-white hover:bg-zinc-800'
+                                        ? 'bg-white text-black'
+                                        : 'bg-zinc-900 text-zinc-500 hover:text-white hover:bg-zinc-800'
                                         }`}
                                 >
                                     {cat}
@@ -129,7 +129,7 @@ export default function ShopPage() {
                             <p className="text-xs text-zinc-600 font-medium tracking-widest uppercase animate-pulse">Loading Catalog...</p>
                         </div>
                     ) : filteredProducts.length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 lg:gap-10">
                             {filteredProducts.map((product) => (
                                 <div key={product.id} className="group relative bg-zinc-900/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-300 hover:shadow-2xl hover:shadow-[var(--primary-glow)]/10 flex flex-col">
                                     {/* Image Container */}
