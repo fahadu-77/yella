@@ -6,8 +6,8 @@ import authRoutes from "./routes/auth.routes.js";
 dotenv.config();
 
 const allowedOrigins = [
-  "http://localhost:3000", // For local testing
-  "https://your-project-name.vercel.app", // Replace this later with your actual Vercel URL
+  "http://localhost:5173", // For local testing
+  "https://yella-store.vercel.app", // Replace this later with your actual Vercel URL
 ];
 
 const app = express();
