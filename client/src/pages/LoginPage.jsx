@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const LoginSchema = Yup.object({
   email: Yup.string().email("invalid email").required("required field"),
@@ -8,13 +8,14 @@ const LoginSchema = Yup.object({
 });
 
 export default function Login({ onSuccess }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
       validationSchema={LoginSchema}
       onSubmit={async (values) => {
-        const res = await fetch("http://localhost:3000/api/auth/login", {
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+        const res = await fetch(`${apiUrl}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),
@@ -25,7 +26,9 @@ export default function Login({ onSuccess }) {
         if (data.token) {
           localStorage.setItem("token", data.token);
           onSuccess();
-          navigate("/dashboard")
+          navigate("/dashboard");
+        }else{
+          alert(data.message || "Login failed");
         }
       }}
     >
