@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const RegisterSchema = Yup.object({
   name: Yup.string().required("required field"),
@@ -14,7 +14,7 @@ const RegisterSchema = Yup.object({
 });
 
 export default function Register({ onSuccess }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -25,7 +25,8 @@ export default function Register({ onSuccess }) {
       }}
       validationSchema={RegisterSchema}
       onSubmit={async (values) => {
-        const res = await fetch("http://localhost:3000/api/auth/register", {
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+        const res = await fetch(`${apiUrl}/api/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -40,7 +41,7 @@ export default function Register({ onSuccess }) {
         if (data.token) {
           localStorage.setItem("token", data.token);
           onSuccess();
-          navigate("/dashboard")
+          navigate("/dashboard");
         }
       }}
     >
