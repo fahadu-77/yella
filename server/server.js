@@ -3,11 +3,15 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import productRoutes from './routes/product.routes.js'
+import orderRoutes from './routes/order.routes.js'
+import adminRoutes from './routes/admin.routes.js'
+import userRoutes from './routes/user.routes.js'
 dotenv.config();
 
 const allowedOrigins = [
-  "http://localhost:5173", // For local testing
-  "https://yella-store.vercel.app", // Replace this later with your actual Vercel URL
+  "http://localhost:5173", 
+  "https://yella-store.vercel.app", 
 ];
 
 const app = express();
@@ -30,6 +34,10 @@ app.use(
 
 connectDB();
 app.use("/api/auth", authRoutes);
+app.use('/api/products',productRoutes)
+app.use('/api/orders',orderRoutes)
+app.use('/api/admin',adminRoutes)
+app.use('/api/users',userRoutes)
 
 const PORT = 3000;
 app.listen(3000, () => {

@@ -9,9 +9,9 @@
     "dev": "node --watch server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "fahadu-77",
   "license": "ISC",
-  "description": "",
+  "description": "yella-store app(anugraha supermarket)",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -20,5 +20,14 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fahadu-77/yella.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fahadu-77/yella/issues"
+  },
+  "homepage": "https://github.com/fahadu-77/yella#readme"
 }

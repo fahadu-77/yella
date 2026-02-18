@@ -1,52 +1,58 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import api from '../services/api';
 
-const LoginSchema = Yup.object({
-  email: Yup.string().email("invalid email").required("required field"),
-  password: Yup.string().min(8, "min 8 characters").required("required field"),
-});
+const Login = () => {
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const { login } = useContext(AuthContext);
 
-export default function Login({ onSuccess }) {
-  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await api.post('/auth/login', formData);
+      
+      const { user, token } = res.data;
+
+      login(user, token);
+      
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Check credentials.');
+    }
+  };
+
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validationSchema={LoginSchema}
-      onSubmit={async (values) => {
-        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
-        const res = await fetch(`${apiUrl}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-
-        const data = await res.json();
-
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          onSuccess();
-          navigate("/dashboard");
-        }else{
-          alert(data.message || "Login failed");
-        }
-      }}
-    >
-      <Form>
-        <h2>Login</h2>
-
-        <div>
-          <Field name="email" type="email" placeholder="Email" />
-          <ErrorMessage name="email" component="div" />
-        </div>
-
-        <div>
-          <Field name="password" type="password" placeholder="Password" />
-          <ErrorMessage name="password" component="div" />
-        </div>
-
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
+    <div style={{ maxWidth: '400px', margin: '100px auto', textAlign: 'center' }}>
+      <h2>Supermarket Login</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          onChange={handleChange}
+          required
+          style={{ padding: '10px' }}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+          required
+          style={{ padding: '10px' }}
+        />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>
+          Login
+        </button>
+      </form>
+    </div>
   );
-}
+};
+
+export default Login;

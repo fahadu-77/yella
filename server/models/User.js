@@ -4,9 +4,17 @@ const userSchema = new mongoose.Schema({
     name:{type:String,required:true},
     email:{type:String,unique:true,required:true},
     password:{type:String,required:true},
-    role:String,
-})
+    phone:{type:String},
+    address:{type:String},
+    role:{
+        type:String,
+        enum:['customer','staff','delivery','admin'],
+        default:'customer'
+    },
 
-const User = mongoose.model("User",userSchema)
+    isOnline:{type:Boolean, default:false},
+    isAvailable:{type:Boolean, default:false},
+    lastAvailableAt:{type:Date, default:Date.now}
+},{timestamps:true})
 
-export default User
+export const User = mongoose.model('User',userSchema)

@@ -1,75 +1,44 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
+import api from '../services/api';
 
-const RegisterSchema = Yup.object({
-  name: Yup.string().required("required field"),
-  email: Yup.string().email("invalid email").required("required field"),
-  password: Yup.string()
-    .min(8, "min of 8 characters")
-    .required("required field"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Password mismatch")
-    .required("reuired field"),
-});
+const Register = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const { login } = useContext(AuthContext);
 
-export default function Register({ onSuccess }) {
-  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post('/auth/register', formData);
+      
+      const { user, token } = res.data;
+      login(user, token);
+    } catch (err) {
+      setError(err.response?.data?.msg || "Registration failed");
+    }
+  };
+
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      }}
-      validationSchema={RegisterSchema}
-      onSubmit={async (values) => {
-        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
-        const res = await fetch(`${apiUrl}/api/auth/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          }),
-        });
-
-        const data = await res.json();
-
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          onSuccess();
-          navigate("/dashboard");
-        }
-      }}
-    >
-      <Form>
-        <h2>Register</h2>
-        <div>
-          <Field name="name" placeholder="Name" />
-          <ErrorMessage name="name" component="div" />
-        </div>
-        <div>
-          <Field name="email" type="email" placeholder="Email" />
-          <ErrorMessage name="email" component="div" />
-        </div>
-        <div>
-          <Field name="password" type="password" placeholder="Password" />
-          <ErrorMessage name="password" component="div" />
-        </div>
-        <div>
-          <Field
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-          />
-          <ErrorMessage name="confirmPassword" component="div" />
-        </div>
-
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
+    <div style={{ maxWidth: '400px', margin: '80px auto', textAlign: 'center' }}>
+      <h2>Create Account</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <input name="name" placeholder="Full Name" onChange={e => setFormData({...formData, name: e.target.value})} required style={{padding: '10px'}} />
+        <input name="email" type="email" placeholder="Email" onChange={e => setFormData({...formData, email: e.target.value})} required style={{padding: '10px'}} />
+        <input name="password" type="password" placeholder="Password" onChange={e => setFormData({...formData, password: e.target.value})} required style={{padding: '10px'}} />
+        
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        
+        <button type="submit" style={{ padding: '12px', backgroundColor: '#007bff', color: 'white', border: 'none', cursor: 'pointer' }}>
+          Register & Start Shopping
+        </button>
+      </form>
+      <p style={{ marginTop: '15px' }}>
+        Already have an account? <Link to="/login">Login here</Link>
+      </p>
+    </div>
   );
-}
+};
+
+export default Register;

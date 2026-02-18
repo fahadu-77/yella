@@ -1,7 +1,11 @@
 import express from 'express'
-import {addUser} from '../controllers/user.controller.js'
 const router = express.Router()
+import {getMe} from '../controllers/authController.js'
+import {toggleDuty} from '../controllers/userController.js'
+import {auth} from '../middlewares/auth.js'
 
-router.post('/add',addUser)
+router.get('/me', auth, getMe);
+router.put('/toggle-duty',auth,toggleDuty)
+
 
 export default router

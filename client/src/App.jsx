@@ -1,38 +1,56 @@
 import './App.css'
-import { useState } from 'react'
-import { BrowserRouter,Routes, Route ,Navigate} from 'react-router-dom'
-import Navbar from './components/Navbar'
+import { BrowserRouter as Router,Routes, Route ,Navigate} from 'react-router-dom'
+import {useContext} from 'react'
+import {AuthContext} from './context/AuthContext'
 import Login from './pages/LoginPage'
 import Register from './pages/RegisterPage'
-import Dashboard from './pages/Dashboard'
+import StaffDashboard from './pages/StaffDashboard'
+import CustomerStore from './pages/CustomerStore'
+import DeliveryTask from './pages/DeliveryTask'
+import Navbar from './components/Navbar'
+
+import AdminLayout from './components/AdminLayout';
+
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminInventory from './pages/admin/AdminInventory';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminOrders from './pages/admin/AdminOrders';
 
 function App() {
-const [isAuthenticated,setIsAuthenticated] = useState(false)
+  const { user,loading } = useContext(AuthContext)
+console.log(user)
+  if(loading) return <div>Loading...</div>
+
   return (
-    <BrowserRouter>
-    <Navbar
-    isAuthenticated={isAuthenticated}
-    onLogout={()=>{
-      localStorage.removeItem("token")
-      setIsAuthenticated(false)
-    
-    }}
-    />
-    <Routes>
-      <Route 
-      path='/login'
-      element={<Login onSuccess={()=>setIsAuthenticated(true)}/>}
-      />
-      <Route
-      path='/register'
-      element={<Register onSuccess={()=>setIsAuthenticated(true)}/>}/>
-  
-      <Route
-      path='/dashboard'
-      element={isAuthenticated ? <Dashboard /> : <Navigate to="/login"/>}
-      />
-    </Routes>
-    </BrowserRouter>
+    <Router>
+        {user?.role !== 'admin' && <Navbar/>}
+      <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
+
+        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+
+        <Route path="/" element={
+          !user ? <Navigate to="/login" /> : 
+          user.role === 'admin' ? <Navigate to="/admin/dashboard" /> :
+          user.role === 'staff' ? <Navigate to="/staff" /> : 
+          user.role === 'delivery' ? <Navigate to="/delivery" /> : 
+          <Navigate to="/store" />
+        } />
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="inventory" element={<AdminInventory />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="orders" element={<AdminOrders />} />
+        </Route>
+
+        <Route path="/staff" element={user?.role === 'staff' || user?.role === 'admin' ? <StaffDashboard /> : <Navigate to="/login" />} />
+        <Route path="/store" element={user?.role === 'customer' ? <CustomerStore /> : <Navigate to="/login" />} />
+        <Route path="/delivery" element={user?.role === 'delivery' ? <DeliveryTask /> : <Navigate to="/login" />} />
+        
+      </Routes>
+    </Router>
   )
 }
 
