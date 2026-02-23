@@ -18,7 +18,6 @@ import AdminOrders from './pages/admin/AdminOrders';
 
 function App() {
   const { user,loading } = useContext(AuthContext)
-console.log(user)
   if(loading) return <div>Loading...</div>
 
   return (
@@ -45,7 +44,7 @@ console.log(user)
           <Route path="orders" element={<AdminOrders />} />
         </Route>
 
-        <Route path="/staff" element={user?.role === 'staff' || user?.role === 'admin' ? <StaffDashboard /> : <Navigate to="/login" />} />
+        <Route path="/staff" element={user?.role === 'staff' ? <StaffDashboard /> : <Navigate to="/login" />} />
         <Route path="/store" element={user?.role === 'customer' ? <CustomerStore /> : <Navigate to="/login" />} />
         <Route path="/delivery" element={user?.role === 'delivery' ? <DeliveryTask /> : <Navigate to="/login" />} />
         

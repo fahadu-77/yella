@@ -13,6 +13,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <App />
     </AuthProvider>
-    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>,
 );

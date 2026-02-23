@@ -35,17 +35,11 @@ export const updateUserRole = async (req, res) => {
 
 export const getDashboardStats = async (req, res) => {
   try {
-    // We run these in parallel to save time
     const [totalOrders, onlineDrivers, totalRevenue] = await Promise.all([
-      // 1. Count orders created today
       Order.countDocuments({
         createdAt: { $gte: new Date().setHours(0, 0, 0, 0) },
       }),
-
-      // 2. Count delivery personnel who are active
       User.countDocuments({ role: "delivery", isOnline: true }),
-
-      // 3. Sum up revenue from completed orders
       Order.aggregate([
         { $match: { status: "delivered" } },
         { $group: { _id: null, total: { $sum: "$totalAmount" } } },
